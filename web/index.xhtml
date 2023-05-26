@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Secure Login</title>
+        <style>
+            *{
+                margin: 0px;
+                padding: 0px;
+                font-size: 14px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:panel id="main_panel" header="Secure Login" style="width: 400px;height:250px;margin-left: auto;margin-right: auto;margin-top: 50px">
+           
+                <p:outputPanel rendered="#{login.current_page=='L'}"  id="login">
+                    <h:form id="login_form">
+                 <p:growl  showDetail="true"/>
+            <p:panelGrid columns="2">
+             
+                <p:outputLabel value="Username"/>
+                <p:inputText type="email" size="30" value="#{login.user.email}" placeholder="Enter your Email" autocomplete="off"/>
+                
+                <p:outputLabel value="Password"/>
+                <p:password  value="#{login.user.password}" placeholder="Enter your Password" autocomplete="off"/>
+               
+                <p:commandButton  update="login_form" value="Login" action="#{login.authenticateUser}"/>
+               
+            </p:panelGrid>
+             </h:form>
+                    
+                       <h:form>
+                            
+                                        <p:commandButton onclick="openSignUp()" type="button" value="No Account?"   
+                                                         style="margin-top: 3px;" >
+
+                                        </p:commandButton>
+                               
+                        </h:form>
+                           <h:form>
+                            <p:remoteCommand name="openSignUp" update="main_panel" actionListener="#{login.swtc('R')}" /> 
+                        </h:form>
+                </p:outputPanel>
+            
+            <p:outputPanel rendered="#{login.current_page=='R'}" id="register">
+                <p:outputLabel value="User Registration"/>
+                <h:form id="signup_form">
+                            <p:growl  showDetail="true" />
+            <p:panelGrid columns="2">
+             
+                <p:outputLabel value="Email"/>
+                <p:inputText required="true" requiredMessage="Enter Email Address" type="email" size="30" value="#{login.new_user.email}" placeholder="Enter your Email" autocomplete="off"/>
+                
+                <p:outputLabel value="Name"/>
+                <p:inputText required="true" requiredMessage="Enter Name"  value="#{login.new_user.name}" placeholder="Enter your Name" autocomplete="off"/>
+                
+                <p:outputLabel value="Password"/> 
+                <p:password required="true" requiredMessage="Enter Password"  value="#{login.new_user.password}" placeholder="Enter your Password" autocomplete="off"/>
+                
+                <p:outputLabel  value=""/>
+                <p:commandButton update="signup_form"  value="Register User" action="#{login.addUser}"/>
+               
+            </p:panelGrid>
+             </h:form>
+                 <h:form>
+                            
+                                        <p:commandButton onclick="openLogin()" type="button" value="Have Account?"   
+                                                         style="margin-top: 3px;" >
+
+                                        </p:commandButton>
+                               
+                        </h:form>
+                           <h:form>
+                            <p:remoteCommand name="openLogin" update="main_panel" actionListener="#{login.swtc('L')}" /> 
+                        </h:form>
+                </p:outputPanel>
+        </p:panel>
+    </h:body>
+</html>
+
