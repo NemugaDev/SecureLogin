@@ -33,7 +33,7 @@ public class UserLogin {
     /**
      * Creates a new instance of UserLogin
      */
-       private String current_page = "L";
+    private String current_page = "L";
     public UserLogon user;
     public boolean isLogged_in;
     
@@ -50,23 +50,20 @@ public class UserLogin {
         new_user=new UserLogon();
         user=new UserLogon();
         
-        all_users.add(new UserLogon("demo@yahoo.com", "John Doe", 1, "pass123*"));
+        //all_users.add(new UserLogon("demo@yahoo.com", "John Doe", 1, "pass123*"));
         /*all_users.add(new UserLogon("usertwo@gmail.com", "Eric Omar", 0, "pass2"));
         all_users.add(new UserLogon("userthree@gmail.com", "John Doe", 0, "pass3"));*/
     }
     
     public String authenticateUser()
     {
-            isLogged_in=false;
-          for(UserLogon u:all_users)
-        {
-            if(u.getEmail().equals(user.getEmail())&&u.getPassword().equals(user.getPassword()))
-            {
-                user=u;
-                isLogged_in=true;
-                break;
-            }
-        }
+           
+            UserLogon current = all_users.stream()
+  .filter(u -> user.getEmail().equals(u.getEmail())&&user.getPassword().equals(u.getPassword()))
+  .findAny()
+  .orElse(null);
+             isLogged_in=current!=null;
+       
           if(!isLogged_in)
           {
               
@@ -97,14 +94,17 @@ public class UserLogin {
     }
     public void addUser()
     {
-        for(UserLogon u:all_users)
-        {
-            if(u.getEmail().equals(new_user.getEmail()))
+        //check if another user exists first with same email address
+       UserLogon current = all_users.stream()
+  .filter(u -> new_user.getEmail().equals(u.getEmail()))
+  .findAny()
+  .orElse(null);
+        if(current!=null)
             {
                 showErrorMessage("Email already Exists");
                 return;
             }
-        }
+      
         if(new_user.getPassword().length()<=6)
         {
             showErrorMessage("Password should be atleast six characters");
